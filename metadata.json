@@ -1,0 +1,11 @@
+{
+  "name": "Technotask WorkHub",
+  "description": "Advanced Work From Home MIS CRM Portal for Technotask MIS department, featuring real-time productivity tracking, task management, and corporate simulation.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation",
+    "clipboard-read",
+    "clipboard-write"
+  ]
+}

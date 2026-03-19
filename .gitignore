@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+
+# Build output
+build/
+dist/
+
+# Environment variables (NEVER commit secrets)
+.env
+.env.local
+.env.production
+.env.development
+
+# Keep the example
+!.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+
+# Vercel
+.vercel
+
+# Database (local dev only)
+*.db
+
+# Coverage
+coverage/
+
+# Cache
+.cache/
