@@ -1,20 +1,27 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Technotask WorkHub
 
-# Run and deploy your AI Studio app
-
-This contains everything you need to run your app locally.
-
-View your app in AI Studio: https://ai.studio/apps/7c9b5107-d6d9-4f6a-82ef-b8fc78ab7825
+Advanced Work From Home MIS CRM Portal for Technotask MIS department, featuring real-time productivity tracking, task management, team chat, and corporate simulation.
 
 ## Run Locally
 
-**Prerequisites:**  Node.js
-
+**Prerequisites:** Node.js
 
 1. Install dependencies:
    `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+2. Create a `.env` file and set `GEMINI_API_KEY` to your Gemini API key (see `.env.example`)
 3. Run the app:
    `npm run dev`
+
+## Login Credentials
+
+| Employee ID | Password | Role |
+|---|---|---|
+| MIS1001 | techno123 | Employee |
+| MIS1002 | techno123 | Employee |
+| MIS1003 | techno123 | Employee |
+| MIS1004 | techno123 | Employee |
+| ADMIN001 | admin123 | Admin |
+
+## Deployment
+
+This app is configured for Vercel deployment. Just connect your GitHub repo to Vercel and add the `GEMINI_API_KEY` environment variable in your Vercel project settings.
