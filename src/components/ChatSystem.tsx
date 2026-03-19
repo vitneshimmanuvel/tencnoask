@@ -4,7 +4,6 @@ import { Send, Paperclip, Smile, MoreVertical, Phone, Video, Search, Check, Chec
 import { User, ChatMessage } from '../types';
 import { format } from 'date-fns';
 import { cn } from '../lib/utils';
-import { io, Socket } from 'socket.io-client';
 
 interface ChatSystemProps {
   currentUser: User;
@@ -18,7 +17,6 @@ export default function ChatSystem({ currentUser }: ChatSystemProps) {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showChatOptions, setShowChatOptions] = useState(false);
   const [quickReplies, setQuickReplies] = useState<string[]>([]);
-  const socketRef = useRef<Socket | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -42,51 +40,14 @@ export default function ChatSystem({ currentUser }: ChatSystemProps) {
   ].filter(m => m.id !== currentUser.id);
 
   useEffect(() => {
-    socketRef.current = io();
-    
-    socketRef.current.emit('join', currentUser.id);
-
-    socketRef.current.on('new_message', (msg: ChatMessage) => {
-      // Only add message if it's from/to the selected user
-      if (selectedUser && ((msg.senderId === selectedUser.id && msg.receiverId === currentUser.id) ||
-          (msg.senderId === currentUser.id && msg.receiverId === selectedUser.id))) {
-        setMessages(prev => {
-          // Avoid duplicates
-          if (prev.some(m => m.id === msg.id)) return prev;
-          return [...prev, msg];
-        });
-      }
-    });
-
-    return () => {
-      socketRef.current?.disconnect();
-    };
-  }, [currentUser.id, selectedUser?.id]);
-
-  useEffect(() => {
     if (!selectedUser) return;
-    const fetchHistory = async (retries = 3) => {
-      try {
-        const res = await fetch(`/api/chat/history/${currentUser.id}/${selectedUser.id}`);
-        const contentType = res.headers.get("content-type");
-        if (!res.ok || !contentType || !contentType.includes("application/json")) {
-          throw new Error(`Invalid response: ${res.status}`);
-        }
-        const data = await res.json();
-        setMessages(data);
-      } catch (err) {
-        console.warn('Failed to fetch chat history, using mock history (Dummy Mode):', err);
-        // Mock history
-        const mockHistory: ChatMessage[] = [
-          { id: 1, senderId: selectedUser.id, message: `Hello ${currentUser.name}, how can I help you with the MIS reports today?`, timestamp: new Date(Date.now() - 3600000).toISOString(), status: 'seen' },
-          { id: 2, senderId: currentUser.id, message: "I need to check the status of the Amazon reconciliation.", timestamp: new Date(Date.now() - 1800000).toISOString(), status: 'seen' },
-          { id: 3, senderId: selectedUser.id, message: "Sure, let me check the database logs for you.", timestamp: new Date(Date.now() - 900000).toISOString(), status: 'seen' },
-        ];
-        setMessages(mockHistory);
-      }
-    };
-
-    fetchHistory();
+    // Mock history - no backend needed
+    const mockHistory: ChatMessage[] = [
+      { id: 1, senderId: selectedUser.id, message: `Hello ${currentUser.name}, how can I help you with the MIS reports today?`, timestamp: new Date(Date.now() - 3600000).toISOString(), status: 'seen' },
+      { id: 2, senderId: currentUser.id, message: "I need to check the status of the Amazon reconciliation.", timestamp: new Date(Date.now() - 1800000).toISOString(), status: 'seen' },
+      { id: 3, senderId: selectedUser.id, message: "Sure, let me check the database logs for you.", timestamp: new Date(Date.now() - 900000).toISOString(), status: 'seen' },
+    ];
+    setMessages(mockHistory);
   }, [currentUser.id, selectedUser?.id]);
 
   useEffect(() => {

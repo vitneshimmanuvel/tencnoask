@@ -4,6 +4,85 @@ import { Lock, User, ShieldAlert } from 'lucide-react';
 import { User as UserType } from '../types';
 import Logo from './Logo';
 
+// Hardcoded users — no backend needed
+const USERS: Record<string, { password: string; user: UserType }> = {
+  MIS1001: {
+    password: 'techno123',
+    user: {
+      id: 'MIS1001',
+      name: 'Parameswari V',
+      role: 'Employee',
+      department: 'Client Data MIS',
+      position: 'MIS Architect',
+      branch: 'Technotask Mysore',
+      joining_date: '2025-01-15',
+      location: 'Erode, Tamil Nadu',
+      phone: '9976170606',
+      email: 'mail2paramubtech@gmail.com',
+    },
+  },
+  MIS1002: {
+    password: 'techno123',
+    user: {
+      id: 'MIS1002',
+      name: 'R Karthik',
+      role: 'Employee',
+      department: 'Sales MIS',
+      position: 'Senior MIS Analyst',
+      branch: 'Technotask Bangalore',
+      joining_date: '2024-05-20',
+      location: 'Bangalore, Karnataka',
+      phone: '9876543210',
+      email: 'karthik@technotask.com',
+    },
+  },
+  MIS1003: {
+    password: 'techno123',
+    user: {
+      id: 'MIS1003',
+      name: 'Divya S',
+      role: 'Employee',
+      department: 'Operations MIS',
+      position: 'MIS Specialist',
+      branch: 'Technotask Mysore',
+      joining_date: '2024-11-10',
+      location: 'Mysore, Karnataka',
+      phone: '9123456789',
+      email: 'divya@technotask.com',
+    },
+  },
+  MIS1004: {
+    password: 'techno123',
+    user: {
+      id: 'MIS1004',
+      name: 'Naveen Kumar',
+      role: 'Employee',
+      department: 'Customer Support MIS',
+      position: 'MIS Associate',
+      branch: 'Technotask Mysore',
+      joining_date: '2025-02-01',
+      location: 'Mysore, Karnataka',
+      phone: '9000000001',
+      email: 'naveen@technotask.com',
+    },
+  },
+  ADMIN001: {
+    password: 'admin123',
+    user: {
+      id: 'ADMIN001',
+      name: 'Admin User',
+      role: 'Admin',
+      department: 'Management',
+      position: 'Operations Head',
+      branch: 'Technotask HQ',
+      joining_date: '2020-01-01',
+      location: 'Bhopal, MP',
+      phone: '1234567890',
+      email: 'admin@technotask.com',
+    },
+  },
+};
+
 interface LoginProps {
   onLogin: (user: UserType) => void;
 }
@@ -19,24 +98,16 @@ export default function Login({ onLogin }: LoginProps) {
     setLoading(true);
     setError('');
 
-    try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ employeeId, password }),
-      });
+    // Small delay to feel realistic
+    await new Promise((r) => setTimeout(r, 500));
 
-      const data = await response.json();
-      if (data.success) {
-        onLogin(data.user);
-      } else {
-        setError(data.message || 'Invalid credentials');
-      }
-    } catch (err) {
-      setError('Connection failed. Please try again.');
-    } finally {
-      setLoading(false);
+    const entry = USERS[employeeId.toUpperCase()];
+    if (entry && entry.password === password) {
+      onLogin(entry.user);
+    } else {
+      setError('Invalid Employee ID or Password');
     }
+    setLoading(false);
   };
 
   return (
